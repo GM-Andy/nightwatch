@@ -97,4 +97,31 @@ describe('custom commands with findElements es6 async', function() {
       globals
     }));
   });
+  it('custom command defined as object returns value', function() {
+    const testsPath = path.join(__dirname, '../../../apidemos/custom-commands/testUsingCustomReturnValue.js');
+
+    Mocks.createNewW3CSession({
+      testName: 'custom command return value'
+    });
+
+    const globals = {
+      waitForConditionPollInterval: 50,
+      waitForConditionTimeout: 120,
+      retryAssertionTimeout: 1000,
+
+      reporter(results) {
+        if (results.lastError) {
+          throw results.lastError;
+        }
+      }
+    };
+
+    return NightwatchClient.runTests(testsPath, settings({
+      output: false,
+      silent: true,
+      selenium_host: null,
+      custom_commands_path: [path.join(__dirname, '../../../extra/commands/es6async')],
+      globals
+    }));
+  });
 });
